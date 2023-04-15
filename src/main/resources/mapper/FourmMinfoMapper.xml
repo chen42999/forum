@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.IForumMinfoMapper">
+    <!--    UPDATE forum_minfo as minfo SET minfo.minfo_reply = minfo.minfo_reply+1 where
+            minfo.main_type = (select main.main_type FROM forum_main as main WHERE main.main_id = ?)-->
+    <update id="updateMinfo">
+        UPDATE mrbbs.forum_minfo as minfo
+        SET minfo.minfo_count = minfo.minfo_count + 1
+        where minfo.main_type = (select main.main_type
+                                 FROM mrbbs.forum_main as main
+                                 WHERE main.main_id = #{mainId})
+    </update>
+    <update id="updateInfo">
+        update mrbbs.forum_minfo
+        set minfo_see = (minfo_see + 1)
+        where main_type = #{mainType}
+    </update>
+    <update id="updateMinfoForReply">
+        UPDATE mrbbs.forum_minfo as minfo
+        SET minfo.minfo_reply = minfo.minfo_reply + 1
+        where minfo.main_type = (select main.main_type FROM mrbbs.forum_main as main WHERE main.main_id = #{mainId})
+    </update>
+
+    <select id="selectMinfoByMainType" resultType="java.util.Map">
+        select *
+        from mrbbs.forum_minfo
+        where main_type = #{mainType}
+    </select>
+</mapper>

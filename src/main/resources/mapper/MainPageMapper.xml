@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.IMainPageMapper">
+
+    <insert id="saveMainContent">
+        insert into my_main(main_id, main_title, main_content, main_creatime, main_creatuser, main_commend)
+        values (#{mainId}, #{mainTitle}, #{mainContent}, #{mainCreatime}, #{mainCreatuser}, #{mainCommend})
+    </insert>
+    <insert id="saveMainInfo">
+        insert into my_info(info_id, main_id, info_reply, info_see, info_lastuser, info_lastime)
+        values (null, #{mainId}, #{infoReply}, #{infoSee}, #{infoLastuser}, #{infoLastime})
+    </insert>
+    <select id="getMainPage" resultType="java.util.HashMap">
+        select m.*, i.info_id, i.info_id, i.info_reply, i.info_see, i.info_lastuser, i.info_lastime
+        from mrbbs.my_main as m
+                 left join mrbbs.my_info as i on m.main_id = i.main_id
+        order by m.main_commend, m.main_creatime desc
+        limit #{row}, #{offset}
+    </select>
+    <select id="getMainCount" resultType="java.lang.Long">
+        select count(main_id) from my_main
+    </select>
+</mapper>

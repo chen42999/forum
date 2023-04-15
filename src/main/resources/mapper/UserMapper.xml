@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.IUserMapper">
+    <insert id="addUser">
+        insert into mrbbs.sys_login(username, password, email, wxname)
+        VALUES (#{username}, #{password}, #{email}, #{wxname})
+    </insert>
+
+    <select id="selectByUsernameCount" resultType="java.lang.Integer">
+        select count(username)
+        from mrbbs.sys_login
+        where username = #{username}
+    </select>
+    <select id="selectByUsername" resultType="com.example.demo.bean.User">
+        select *
+        from mrbbs.sys_login
+        where username = #{username};
+    </select>
+</mapper>

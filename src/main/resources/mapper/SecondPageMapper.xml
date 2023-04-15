@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.ISecondPageMapper">
+    <insert id="saveSecondPage">
+        insert into mrbbs.my_second(sec_id, main_id, sec_sequence, sec_content, sec_creatuser, sec_creatime)
+        VALUES (#{secId}, #{mainId}, 1, #{content}, #{creatuser}, now())
+    </insert>
+
+    <select id="selectMain" resultType="java.util.HashMap">
+        select main_id,
+               main_title,
+               main_content,
+               DATE_FORMAT(main_creatime, '%Y年%m月%d日 %h时%i分%s秒') as main_creatime,
+               main_creatuser,
+               main_commend
+        from mrbbs.my_main
+        where main_id = #{mainId}
+    </select>
+    <select id="selectSecond" resultType="java.util.HashMap">
+        select sec_id,
+               main_id,
+               sec_sequence,
+               sec_content,
+               date_format(sec_creatime, '%Y年%m月%d日 %h时%i分%s秒') as sec_creatime,
+               sec_creatuser
+        from mrbbs.my_second
+        where main_id = #{mainId}
+        order by sec_creatime
+        limit #{start}, #{offset}
+    </select>
+    <select id="getSecondCount" resultType="java.lang.Long">
+        select count(sec_id) from mrbbs.my_second where main_id=#{mainId}
+    </select>
+</mapper>

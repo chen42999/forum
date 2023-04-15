@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.IForumMainMapper">
+
+    <insert id="saveMainContent">
+        insert into mrbbs.forum_main(main_id, main_title, main_content, main_creatime, main_creatuser, main_recommend)
+        values (#{mainId}, #{mainTitle}, #{mainContent}, #{mainCreatime}, #{mainCreatuser}, #{mainCommend})
+    </insert>
+    <insert id="saveMainInfo">
+        insert into mrbbs.forum_info(info_id, main_id, info_reply, info_see, info_lastuser, info_lastime)
+        values (null, #{mainId}, #{infoReply}, #{infoSee}, #{infoLastuser}, #{infoLastime})
+    </insert>
+    <insert id="insertMain">
+        INSERT INTO mrbbs.forum_main (main_id, main_title, main_flag, main_type, main_content, main_creatime,
+                                      main_creatuser,
+                                      main_recommend, main_delete, main_nickname, main_zan)
+        values (#{mainId}, #{mainTitle}, #{mainFlag}, #{mainType}, #{mainContent}, NOW(), #{mainCreatuser},
+                #{mainRecommend}, #{mainDelete}, #{mainNickname}, #{mainZan})
+    </insert>
+    <insert id="insertInfo">
+        INSERT INTO mrbbs.forum_info (info_reply, info_see, info_lastuser, info_lastime, main_id)
+        VALUES (0, 0, #{mainNickname}, NOW(), #{mainId})
+    </insert>
+    <insert id="insertSecond">
+        INSERT INTO mrbbs.forum_second
+        (sec_id, main_id, sec_sequence, sec_content, sec_creatuser, sec_creatime, sec_nickname, sec_resequence,
+         sec_delete, sec_reid, username)
+        VALUES (#{secId}, #{mainId}, #{sequence}, #{content}, #{username}, NOW(), #{nickname}, #{resequence}, 'n',
+                #{reId}, #{username})
+    </insert>
+    <!--    String mainId, String content, Integer sequence, Integer resequence,-->
+    <!--    String reId, String username, String nickname-->
+    <!--    UPDATE forum_info SET info_reply = info_reply+1,info_lastuser = ?,info_lastime = NOW() WHERE main_id = ?-->
+    <update id="updateInfo">
+        UPDATE mrbbs.forum_info
+        SET info_reply    = info_reply + 1,
+            info_lastuser = #{nickname},
+            info_lastime  = NOW()
+        WHERE main_id = #{mainId}
+    </update>
+    <update id="updateMainRecommend">
+        UPDATE mrbbs.forum_main
+        SET main_recommend = ?
+        WHERE main_id = #{mainId}
+    </update>
+    <update id="updateBaseUserinfo">
+        UPDATE mrbbs.base_userinfo
+        SET base_huitieshu = base_huitieshu + 1
+        WHERE username = #{username}
+    </update>
+    <select id="selectMainByType" resultType="java.util.HashMap">
+        SELECT main.*, info.info_id, info.info_reply, info.info_see, info.info_lastuser, info.info_lastime
+        FROM mrbbs.forum_main as main
+                 left join mrbbs.forum_info as info on main.main_id = info.main_id
+        where main.main_type = #{mainType}
+        order by main.main_recommend, main.main_creatime desc
+        limit #{start},#{offset}
+    </select>
+    <select id="selectMainCountByMainType" resultType="java.lang.Long">
+        select count(main_id) as count
+        from mrbbs.forum_main
+        where main_type = #{mainType}
+    </select>
+    <select id="selectMainByReCommend" resultType="java.util.Map">
+        SELECT main.*, info.info_id, info.info_reply, info.info_see, info.info_lastuser, info.info_lastime
+        FROM mrbbs.forum_main as main
+                 left join mrbbs.forum_info as info on main.main_id = info.main_id
+        where main.main_recommend = 1
+        order by main.main_recommend, main.main_creatime desc
+        limit #{start},#{offset}
+    </select>
+    <select id="selectMainByTitle" resultType="java.util.Map">
+        SELECT main.*, info.info_id, info.info_reply, info.info_see, info.info_lastuser, info.info_lastime
+        FROM mrbbs.forum_main as main
+                 left join mrbbs.forum_info as info on main.main_id = info.main_id
+        where main.main_title like #{mainType}
+        order by main.main_recommend, main.main_creatime desc
+    </select>
+    <select id="selectBanzhuByMainType" resultType="java.util.Map">
+        SELECT *
+        FROM mrbbs.forum_banzhu
+        where main_type = #{mainType}
+    </select>
+    <select id="selectBanzhuAndUserByMainType" resultType="java.util.Map">
+        SELECT banzhu.main_type, banzhu.username, login.wxname
+        FROM mrbbs.forum_banzhu banzhu
+                 LEFT JOIN mrbbs.sys_login login on banzhu.username = login.username
+        where main_type = #{mainType}
+    </select>
+    <select id="selectMainCountByRecommend" resultType="java.lang.Long">
+        select count(main_id) as count
+        from mrbbs.forum_main
+        where main_recommend = 1
+    </select>
+    <select id="selectMainByMainId" resultType="java.util.Map">
+        SELECT main.*, uinfo.base_name, uinfo.base_age, uinfo.base_sex, uinfo.base_fatieshu, uinfo.base_huitieshu
+        FROM mrbbs.forum_main main
+                 LEFT JOIN mrbbs.base_userinfo uinfo on main.main_creatuser = uinfo.username
+        WHERE main_id = #{mainId}
+    </select>
+    <select id="selectSecond" resultType="java.util.Map">
+        SELECT sec.*, uinfo.base_name, uinfo.base_age, uinfo.base_sex, uinfo.base_fatieshu, uinfo.base_huitieshu
+        FROM mrbbs.forum_second sec
+                 LEFT JOIN mrbbs.base_userinfo uinfo ON sec.username = uinfo.username
+        where sec.main_id = ?
+        ORDER BY sec.sec_sequence, #{order}
+        LIMIT #{start},#{offset}
+    </select>
+    <select id="selectSecondCount" resultType="java.lang.Long">
+        select count(sec_id) as count
+        from mrbbs.forum_second
+        where main_id = #{mainId}
+    </select>
+    <select id="selectDictionaryByDictKey" resultType="java.util.Map">
+        select dict_value
+        FROM mrbbs.forum_dictionary
+        where dict_key = #{mainType}
+    </select>
+    <select id="selectMainLeftDictByMainId" resultType="java.util.Map">
+        select main.main_title, dict.dict_key, dict_value
+        from mrbbs.forum_main main
+                 LEFT JOIN mrbbs.forum_dictionary dict on main.main_type = dict.dict_key
+        where main_id = #{mainId}
+    </select>
+    <select id="selectDictionary" resultType="java.util.Map">
+        SELECT dict_value, dict_key
+        FROM mrbbs.forum_dictionary
+        where dict_group = #{group}
+        ORDER BY dict_order
+    </select>
+    <select id="selectInfo" resultType="java.lang.Integer">
+        select info_reply
+        FROM mrbbs.forum_info
+        where main_id = #{mainId}
+    </select>
+    <select id="selectByType" resultType="com.example.demo.bean.ForumMain">
+        select *
+        from mrbbs.forum_main
+        where main_type = #{mainType}
+          and main_Recommend = #{mainRecommend}
+        limit #{start}, #{offset}
+    </select>
+</mapper>

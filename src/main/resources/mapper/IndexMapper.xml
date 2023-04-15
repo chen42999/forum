@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.IIndexMapper">
+    <select id="selectDictionary" resultType="com.example.demo.bean.Dictionary">
+        select *
+        from mrbbs.forum_dictionary;
+    </select>
+    <select id="selectForumMain" resultType="java.util.HashMap">
+        select main_id, main_title, main_type
+        from mrbbs.forum_main;
+    </select>
+    <select id="getRecommendTop5" resultType="com.example.demo.bean.ForumMain">
+        select *
+        from mrbbs.forum_main
+        where main_type = #{typeKey}
+        order by main_creatime
+        limit 0, 5
+    </select>
+    <select id="selectByType" resultType="com.example.demo.bean.ForumMain">
+        select
+        ,
+        from forum_main
+        <where>
+            <if test="mainType != null">
+                main_type = #{mainType}
+            </if>
+            <if test="mainRecommend != null">
+                and main_recommend = #{mainRecommend}
+            </if>
+        </where>
+        order by main_recommend,main_creatime
+        limit #{start},#{offset}
+    </select>
+    <select id="findAllForumMain" resultType="com.example.demo.bean.ForumMain">
+        select *
+        from mrbbs.forum_main;
+    </select>
+    <select id="selectDictionaryByGroup" resultType="java.util.Map">
+        SELECT dict_value, dict_key
+        FROM mrbbs.forum_dictionary
+        where dict_group = #{Group}
+        ORDER BY dict_order
+    </select>
+</mapper>

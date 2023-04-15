@@ -1,0 +1,35 @@
+#指定内嵌Tomcat端口号
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+#配置SpringMVC视图解析器
+#其中：/ 表示目录为src/main/webapp
+spring:
+  mvc:
+    view:
+      prefix: /
+      suffix: .jsp
+  datasource:
+    url: jdbc:mysql://localhost:3306/mrbbs?characterEncoding=utf-8&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true&serverTimezone=UTC
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jackson:
+    serialization:
+      indent-output: true
+  devtools:
+    restart:
+      additional-paths: src/main/java
+      enabled: true
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#logging:
+#  level:
+#    com.example.demo.repository: debu
