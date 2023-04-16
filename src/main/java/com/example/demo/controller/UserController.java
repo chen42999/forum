@@ -91,7 +91,7 @@ public class UserController {
                     String temp = cotroUrl.substring(cotroUrl.lastIndexOf("/"));
                     modelAndView.setViewName("redirect:/" + temp);
                 } else {
-                    modelAndView.setViewName("redirect:/index.jsp");
+                    modelAndView.setViewName("redirect:/index");
                 }
             } catch (IncorrectCredentialsException e) {
                 msg = "登录密码错误.Password for account" + token.getPrincipal() + "was incorrect";
@@ -145,11 +145,14 @@ public class UserController {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(username, DigestUtils.md5DigestAsHex(password.getBytes(StandardCharsets.UTF_8)));
         ModelAndView modelAndView = new ModelAndView();
-        HttpSession session =  request.getSession();
+        HttpSession session = request.getSession();
         String msg = "";
         try {
             subject.login(token);
-            modelAndView.setViewName("redirect:/index.jsp");
+            session.setAttribute("UserName", username);
+            session.setAttribute("loginEntity", subject.getPrincipal());
+            session.setAttribute("loginFlag", true);
+            modelAndView.setViewName("redirect:/index");
             return modelAndView;
         } catch (UnknownAccountException e) {
 //            token.getPrincipal() 拿到用户输入错误的用户名

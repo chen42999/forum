@@ -17,4 +17,14 @@
         from mrbbs.sys_login
         where username = #{username};
     </select>
+    <select id="selectRoleIdByUserId" resultType="com.example.demo.bean.UserRole">
+        select role_id
+        from mrbbs.sys_login_role
+        where login_id = #{userId}
+    </select>
+    <select id="selectRolesByRoleId" >
+        select role_name
+        from mrbbs.sys_role
+        where role_id = #{roleId}
+    </select>
 </mapper>

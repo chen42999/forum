@@ -10,6 +10,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 /**
 * 登录信息表
@@ -56,4 +58,13 @@ public class User implements Serializable {
     @Length(max= 45,message="编码长度不能超过45")
     private String wxname;
 
+    private Set<String> roles;
+
+    public User(Integer userId, String username, String password, String wxname, String email) {
+        loginId = userId;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.wxname = wxname;
+    }
 }

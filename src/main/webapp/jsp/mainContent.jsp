@@ -316,7 +316,7 @@ String socketPath = request.getServerName()+":"+request.getServerPort()+path+"/"
     <!-- 实例化编辑器 -->
     <script type="text/javascript">
    		 var editor = UE.getEditor('container');
-    	 var success = ${sessionScope.loginFlag};
+    	 var success = ${sessionScope.loginFlag}
 	   	 editor.addListener('ready',function (){
 	   			if(success){
 					console.log("OK");

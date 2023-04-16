@@ -74,13 +74,13 @@
         <!-- Wrapper for slides -->
         <div class="carousel-inner" role="listbox">
             <div class="item active">
-                <img alt="First slide [2046x256]" class="img-responsive" src="<%=basePath %>image/banner_01.png">
+                <img alt="First slide [2046x256]" class="img-responsive" src="image/banner_01.png">
                 <div class="carousel-caption">
                     <p class="text-primary"></p>
                 </div>
             </div>
             <div class="item">
-                <img alt="First slide [2046x256]" class="img-responsive" src="<%=basePath %>image/banner_02.png">
+                <img alt="First slide [2046x256]" class="img-responsive" src="image/banner_02.png">
                 <div class="carousel-caption">
                     <p class="text-primary"></p>
                 </div>
@@ -119,7 +119,7 @@
                 <ul class="nav navbar-nav">
                     <li><a href="/index">首页 </a></li>
                     <%--          <li><a href="/JinghuaContent">精华帖子</a></li>--%>
-                    <li><a href="jinghua.jsp">精华帖子</a></li>
+                    <li><a href="JinghuaContent">精华帖子</a></li>
                 </ul>
 
                 <form action="findMainByTitle" class="navbar-form navbar-left" role="search">

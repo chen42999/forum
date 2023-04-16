@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -331,11 +333,9 @@ public class ForumServiceImpl implements IForumMainService {
     public List<Map<String, Object>> getSecond(String mainId, String order, Integer start, Integer offset) {
         List<Map<String, Object>> maps = forumMainMapper.selectSecond(mainId, order, start, offset);
         for (Map<String, Object> entity : maps){
-            java.sql.Timestamp timestamp = (java.sql.Timestamp)entity.get("sec_creatime");
-            long time = timestamp.getTime();    //转换为Long
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日    hh时mm分ss秒");
-            String creatime = simpleDateFormat.format(new Date(time));					   //时间转换
-            entity.put("sec_creatime", creatime);										   //修改元素
+            LocalDateTime timestamp = (LocalDateTime) entity.get("sec_creatime");
+            timestamp.format(DateTimeFormatter.ofPattern("yyyy年MM月dd日    hh时mm分ss秒"));
+            entity.put("sec_creatime", timestamp);										   //修改元素
         }
 
         return maps;

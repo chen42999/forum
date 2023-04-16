@@ -1,6 +1,9 @@
 package com.example.demo.bean;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -12,6 +15,9 @@ import java.io.Serializable;
 * 用户较色对照表
 * @TableName sys_login_role
 */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserRole implements Serializable {
 
     /**
@@ -40,62 +46,5 @@ public class UserRole implements Serializable {
     @ApiModelProperty("")
     @Length(max= 20,message="编码长度不能超过20")
     private String username;
-
-    /**
-    * 
-    */
-    private void setId(Integer id){
-    this.id = id;
-    }
-
-    /**
-    * 
-    */
-    private void setLoginId(Integer loginId){
-    this.loginId = loginId;
-    }
-
-    /**
-    * 
-    */
-    private void setRoleId(Integer roleId){
-    this.roleId = roleId;
-    }
-
-    /**
-    * 
-    */
-    private void setUsername(String username){
-    this.username = username;
-    }
-
-
-    /**
-    * 
-    */
-    private Integer getId(){
-    return this.id;
-    }
-
-    /**
-    * 
-    */
-    private Integer getLoginId(){
-    return this.loginId;
-    }
-
-    /**
-    * 
-    */
-    private Integer getRoleId(){
-    return this.roleId;
-    }
-
-    /**
-    * 
-    */
-    private String getUsername(){
-    return this.username;
-    }
 
 }

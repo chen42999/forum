@@ -103,7 +103,7 @@
         SELECT sec.*, uinfo.base_name, uinfo.base_age, uinfo.base_sex, uinfo.base_fatieshu, uinfo.base_huitieshu
         FROM mrbbs.forum_second sec
                  LEFT JOIN mrbbs.base_userinfo uinfo ON sec.username = uinfo.username
-        where sec.main_id = ?
+        where sec.main_id = #{mainId}
         ORDER BY sec.sec_sequence, #{order}
         LIMIT #{start},#{offset}
     </select>
